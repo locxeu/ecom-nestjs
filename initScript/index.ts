@@ -13,7 +13,7 @@ const main = async () => {
   const roles = await prisma.role.createMany({
     data: [
       { name: Role.ADMIN, description: 'Admin role' },
-      { name: Role.USER, description: 'User role' },
+      { name: Role.CLIENT, description: 'Client role' },
       { name: Role.SELLER, description: 'Seller role' },
     ],
   })
