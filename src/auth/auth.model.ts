@@ -41,16 +41,6 @@ export type RegisterBodyType = z.infer<typeof RegisterBodySchema>
 export const LoginBodySchema = UserSchema.pick({
     email: true,
     password: true,
-}).extend({
-    confirmPassword: z.string().min(6).max(100),
-}).superRefine((data, ctx) => {
-    if (data.password !== data.confirmPassword) {
-        ctx.addIssue({
-            code: 'custom',
-            message: 'Passwords and Confirm Password do not match',
-            path: ['confirmPassword'],
-        })
-    }
 })
 
 export type LoginBodyType = z.infer<typeof LoginBodySchema>

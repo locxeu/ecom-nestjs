@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post, Request, UseGuards } from '@nestjs/common'
 import { AuthService } from './auth.service'
-import { LoginBodyDto, RegisterBodyDto, RegisterResponseDto, SendOTPBodyDto } from './auth.dto'
+import { LoginBodyDto, RegisterBodyDto, RegisterResponseDto, SendOTPBodyDto } from './dto/auth.dto'
 import { AuthGuard } from 'src/shared/guards/access-token.guard'
 import { ZodSerializerDto } from 'nestjs-zod'
 
@@ -19,10 +19,11 @@ export class AuthController {
     return this.authService.sendOTP(body)
   }
 
-  // @Post('login')
-  // async login(@Body() body: LoginBodyDto) {
-  //   return this.authService.login(body)
-  // }
+  // Login will be implemented in a separate step.
+  @Post('login')
+  async login(@Body() body: LoginBodyDto) {
+    return this.authService.login(body)
+  }
 
   // @Get('profile')
   // @UseGuards(AuthGuard)

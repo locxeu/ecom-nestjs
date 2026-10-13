@@ -1,11 +1,15 @@
 import { Module } from '@nestjs/common'
+import { PassportModule } from '@nestjs/passport'
+import { JwtStrategy } from './strategies/jwt.strategy'
 import { AuthController } from './auth.controller'
-import { AuthRepository } from './auth.repo'
 import { AuthService } from './auth.service'
-import { RolesService } from './roles.services'
+import { RolesModule } from '../roles/roles.module'
+import { PrismaAuthPersistenceModule } from './infrastructure/persistence/prisma/prisma-persistence.module'
 
 @Module({
-    controllers: [AuthController],
-    providers: [AuthService, AuthRepository, RolesService],
+  imports: [PassportModule, RolesModule, PrismaAuthPersistenceModule],
+  controllers: [AuthController],
+  providers: [AuthService, JwtStrategy],
+  exports: [PassportModule],
 })
-export class AuthModule { }
+export class AuthModule {}
