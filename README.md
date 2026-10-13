@@ -25,6 +25,51 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
+## Project structure
+
+The project organizes features into NestJS modules using Ports & Adapters. Each module follows this representative structure; add folders only when needed.
+
+```text
+src/
+├── main.ts
+├── app.module.ts
+├── shared/                           # Common configuration and services
+└── <feature>/
+    ├── <feature>.module.ts           # Dependency wiring
+    ├── <feature>.controller.ts       # HTTP endpoints
+    ├── <feature>.service.ts          # Business logic
+    ├── dto/
+    │   ├── <operation>.schema.ts     # Zod input/output validation
+    │   └── <operation>.dto.ts        # NestJS DTO built from the schema
+    ├── domain/
+    │   ├── <entity>.ts               # Domain types
+    │   └── <operation>.input.ts      # Framework-independent input
+    └── infrastructure/
+        └── persistence/
+            ├── <entity>.repository.ts          # Repository port
+            └── prisma/
+                ├── prisma-persistence.module.ts # Binds port to adapter
+                ├── repositories/
+                │   └── <entity>.repository.ts  # Prisma adapter
+                └── mappers/                    # Optional data conversion
+
+prisma/
+└── schema.prisma                     # Database models and relations
+
+test/
+└── <feature>/                        # Feature tests
+```
+
+Controllers handle HTTP requests, services apply business rules, and repository ports define storage operations. Prisma adapters implement those operations. Zod schemas validate API input and shape output through the configured pipes and serializers.
+
+```text
+Request → Guard → Validation → Controller → Service
+        → Repository port → Prisma adapter → Database
+        → Response serialization → Client
+```
+
+Guards run on protected routes. Database models live in `schema.prisma`, so separate ORM entity files are unnecessary. Add mappers when persistence and domain structures differ. Other infrastructure adapters, such as uploaders or email senders, belong to the modules that own those integrations.
+
 ## Project setup
 
 ```bash
